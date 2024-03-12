@@ -24,6 +24,56 @@ async function typeWithDelay(page, selector, text) {
 }
 
 test.beforeEach(async ({ page }) => {
+  page.on("domcontentloaded", () => {
+    // Inject CSS and JS whenever a new page loads
+    page.addStyleTag({
+      content: `.click-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background-color: rgba(255, 0, 0, 0.3);
+      opacity: 0;
+      transition: all 1s ease-out;
+    }`,
+    });
+    page.addScriptTag({
+      content: `document.addEventListener('click', (event) => {
+      console.log(event)
+      // Create animation element
+      const animationElement = document.createElement('div');
+      animationElement.className = 'click-animation';
+    
+      // Set initial position based on click coordinates
+      const clickX = event.clientX;
+      const clickY = event.clientY;
+      animationElement.style.top = clickY + 'px';
+      animationElement.style.left = clickX + 'px';
+      animationElement.style.width = 0 + 'px'
+      animationElement.style.height = 0 + 'px'
+      animationElement.style.opacity = 1;
+      animationElement.style.zIndex = 9999999
+    
+      // Append animation element to the body
+      document.body.appendChild(animationElement);
+      setTimeout(() => {
+        // Start the animation
+        animationElement.style.opacity = 0;
+        animationElement.style.width = '50px';
+        animationElement.style.height = '50px';
+        animationElement.style.top = clickY - 25 + 'px';
+        animationElement.style.left = clickX -25 + 'px';
+      }, 1);
+      
+      setTimeout(() => {
+        animationElement.remove()
+      }, 2000);
+    });`,
+    });
+  });
+
   await page.setViewportSize({ width: 1920, height: 1080 });
   await page.goto("http://localhost:3000/");
   await typeWithDelay(
