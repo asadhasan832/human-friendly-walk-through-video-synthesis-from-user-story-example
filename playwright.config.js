@@ -33,15 +33,17 @@ module.exports = defineConfig({
       mode: "on",
       size: { width: 1920, height: 1080 },
     },
-    viewport: { width: 1920, height: 1080 },
-    headless: false,
+    headless: true,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1920, height: 1080 },
+      },
     },
 
     // {

@@ -1,19 +1,24 @@
 // @ts-check
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require("@playwright/test");
 
-test('has title', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Expect a title "to contain" a substring.
-  await expect(page).toHaveTitle(/Playwright/);
+test.beforeEach(async ({ page }) => {
+  await page.goto("http://localhost:3000/");
+  await page
+    .locator('input[id="email-address"]')
+    .fill("garnetthudson@funk.biz");
+  await page.locator('input[id="password"]').fill("RPBUK%KE{ fq9zq;er<H");
+  await page.click(`button[id="form-submit"]`);
+  await page.waitForSelector('ul[role="list"]');
 });
 
-test('get started link', async ({ page }) => {
-  await page.goto('https://playwright.dev/');
-
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Get started' }).click();
-
-  // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+test("IC-2 Send Connection Request", async ({ page }) => {
+  await page.click(`ul[role="list"] li:nth-child(2) a`);
+  await page.waitForSelector(`main button[type="button"]`);
+  await page.click(`main button[type="button"]`);
+  await page.waitForSelector(`input[id="email-address"]`);
+  await page
+    .locator('input[id="email-address"]')
+    .fill("holliekris@ernser.name");
+  await page.click(`.text-right button[id="form-submit"]`);
+  //await page.waitForTimeout(5000);
 });
