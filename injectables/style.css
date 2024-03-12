@@ -1,0 +1,11 @@
+.click-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 0, 0, 0.3);
+  opacity: 0;
+  transition: all 1s ease-out;
+}
