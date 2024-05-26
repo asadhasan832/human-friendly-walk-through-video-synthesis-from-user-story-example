@@ -1,4 +1,5 @@
 // @ts-check
+import { viewport } from "./config/viewport-config";
 const { defineConfig, devices } = require("@playwright/test");
 
 /**
@@ -31,7 +32,7 @@ module.exports = defineConfig({
     trace: "on-first-retry",
     video: {
       mode: "on",
-      size: { width: 1920, height: 1080 },
+      size: viewport,
     },
     headless: false,
   },

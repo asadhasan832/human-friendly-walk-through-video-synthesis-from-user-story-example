@@ -1,5 +1,6 @@
 // @ts-check
 import fs from "fs/promises";
+import { viewport } from "../config/viewport-config";
 import { getRandomInt, typeWithDelay } from "../config/delay-config";
 const { test, expect } = require("@playwright/test");
 const WALKTHROUGH_MODE = process.env.WALKTHROUGH_MODE;
@@ -27,7 +28,7 @@ test.beforeEach(async ({ page }) => {
   }
 
   //Set view port to match the dimensions of the video being generated
-  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.setViewportSize(viewport);
   await page.goto("https://ca.idempotence.io/");
   await typeWithDelay(
     page,
