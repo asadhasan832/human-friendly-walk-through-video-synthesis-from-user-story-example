@@ -1,6 +1,6 @@
 // @ts-check
 import fs from "fs/promises";
-import { getRandomInt, typeWithDelay } from "../lib/delay-config";
+import { getRandomInt, typeWithDelay } from "../config/delay-config";
 const { test, expect } = require("@playwright/test");
 const WALKTHROUGH_MODE = process.env.WALKTHROUGH_MODE;
 
