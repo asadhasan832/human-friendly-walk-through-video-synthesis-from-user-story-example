@@ -75,13 +75,13 @@ test.beforeEach(async ({ page }) => {
   });
 
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto("http://localhost:3000/");
+  await page.goto("http://localhost:3001/");
   await typeWithDelay(
     page,
     'input[id="email-address"]',
-    "garnetthudson@funk.biz"
+    "porterhowell@parisian.com"
   );
-  await typeWithDelay(page, 'input[id="password"]', "RPBUK%KE{ fq9zq;er<H");
+  await typeWithDelay(page, 'input[id="password"]', "tryme");
   await page.click(`button[id="form-submit"]`, {
     delay: getRandomInt(1000, 3000),
   });
@@ -100,7 +100,7 @@ test("IC-2 Send Connection Request", async ({ page }) => {
   await typeWithDelay(
     page,
     'input[id="email-address"]',
-    "holliekris@ernser.name"
+    "sandrineryan@hamill.biz"
   );
 
   await page.click(`.text-right button[id="form-submit"]`, {
