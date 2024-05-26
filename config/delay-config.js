@@ -1,4 +1,4 @@
-const WALKTHROUGH_MODE = process.env.WALKTHROUGH_MODE;
+const CAPABILITY_WALKTHROUGH_MODE = process.env.CAPABILITY_WALKTHROUGH_MODE;
 
 const delay_max = 100;
 const delay_min = 10;
@@ -10,7 +10,7 @@ function getRandomInt(min, max) {
   }
 
   // Utilize Math.floor and Math.random to get a random integer within the range
-  if (WALKTHROUGH_MODE == "on") {
+  if (CAPABILITY_WALKTHROUGH_MODE == "on") {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   } else {
     return 0;
@@ -20,7 +20,7 @@ function getRandomInt(min, max) {
 async function typeWithDelay(page, selector, text) {
   for (const char of text) {
     await page.type(selector, char);
-    if (WALKTHROUGH_MODE == "on") {
+    if (CAPABILITY_WALKTHROUGH_MODE == "on") {
       await new Promise((resolve) =>
         setTimeout(resolve, getRandomInt(delay_min, delay_max))
       );

@@ -3,11 +3,11 @@ import fs from "fs/promises";
 import { viewport } from "../config/viewport-config";
 import { getRandomInt, typeWithDelay } from "../config/delay-config";
 const { test, expect } = require("@playwright/test");
-const WALKTHROUGH_MODE = process.env.WALKTHROUGH_MODE;
+const CAPABILITY_WALKTHROUGH_MODE = process.env.CAPABILITY_WALKTHROUGH_MODE;
 
 test.beforeEach(async ({ page }) => {
   //Add click visual effects for walkthrough mode
-  if (WALKTHROUGH_MODE == "on") {
+  if (CAPABILITY_WALKTHROUGH_MODE == "on") {
     const func = (
       await fs.readFile(`${__dirname}/../injectables/function.js`)
     ).toString("utf8");
@@ -60,7 +60,7 @@ test("IC-2 Send Connection Request", async ({ page }) => {
   await page.click(`.text-right button[id="form-submit"]`, {
     delay: getRandomInt(1000, 3000),
   });
-  if (WALKTHROUGH_MODE == "on") {
+  if (CAPABILITY_WALKTHROUGH_MODE == "on") {
     await page.waitForTimeout(5000);
   }
 });
