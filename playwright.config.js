@@ -33,7 +33,7 @@ module.exports = defineConfig({
       mode: "on",
       size: { width: 1920, height: 1080 },
     },
-    headless: true,
+    headless: false,
   },
 
   /* Configure projects for major browsers */

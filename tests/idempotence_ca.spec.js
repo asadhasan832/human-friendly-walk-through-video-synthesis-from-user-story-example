@@ -1,85 +1,38 @@
 // @ts-check
+import fs from "fs/promises";
+import { getRandomInt, typeWithDelay } from "../lib/delay-config";
 const { test, expect } = require("@playwright/test");
-
-const delay_max = 100;
-const delay_min = 10;
-
-function getRandomInt(min, max) {
-  // Ensure min <= max
-  if (min > max) {
-    [min, max] = [max, min]; // Swap values if min is greater than max
-  }
-
-  // Utilize Math.floor and Math.random to get a random integer within the range
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-async function typeWithDelay(page, selector, text) {
-  for (const char of text) {
-    await page.type(selector, char);
-    await new Promise((resolve) =>
-      setTimeout(resolve, getRandomInt(delay_min, delay_max))
-    );
-  }
-}
+const WALKTHROUGH_MODE = process.env.WALKTHROUGH_MODE;
 
 test.beforeEach(async ({ page }) => {
-  page.on("domcontentloaded", () => {
-    // Inject CSS and JS whenever a new page loads
-    page.addStyleTag({
-      content: `.click-animation {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background-color: rgba(255, 0, 0, 0.3);
-      opacity: 0;
-      transition: all 1s ease-out;
-    }`,
-    });
-    page.addScriptTag({
-      content: `document.addEventListener('click', (event) => {
-      console.log(event)
-      // Create animation element
-      const animationElement = document.createElement('div');
-      animationElement.className = 'click-animation';
-    
-      // Set initial position based on click coordinates
-      const clickX = event.clientX;
-      const clickY = event.clientY;
-      animationElement.style.top = clickY + 'px';
-      animationElement.style.left = clickX + 'px';
-      animationElement.style.width = 0 + 'px'
-      animationElement.style.height = 0 + 'px'
-      animationElement.style.opacity = 1;
-      animationElement.style.zIndex = 9999999
-    
-      // Append animation element to the body
-      document.body.appendChild(animationElement);
-      setTimeout(() => {
-        // Start the animation
-        animationElement.style.opacity = 0;
-        animationElement.style.width = '50px';
-        animationElement.style.height = '50px';
-        animationElement.style.top = clickY - 25 + 'px';
-        animationElement.style.left = clickX -25 + 'px';
-      }, 1);
-      
-      setTimeout(() => {
-        animationElement.remove()
-      }, 2000);
-    });`,
-    });
-  });
+  //Add click visual effects for walkthrough mode
+  if (WALKTHROUGH_MODE == "on") {
+    const func = (
+      await fs.readFile(`${__dirname}/../injectables/function.js`)
+    ).toString("utf8");
 
+    const style = (
+      await fs.readFile(`${__dirname}/../injectables/style.css`)
+    ).toString("utf8");
+
+    page.on("domcontentloaded", () => {
+      // Inject CSS and JS whenever a new page loads
+      page.addStyleTag({
+        content: style,
+      });
+      page.addScriptTag({
+        content: func,
+      });
+    });
+  }
+
+  //Set view port to match the dimensions of the video being generated
   await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto("http://localhost:3001/");
+  await page.goto("https://ca.idempotence.io/");
   await typeWithDelay(
     page,
     'input[id="email-address"]',
-    "porterhowell@parisian.com"
+    "summerrutherford@nikolaus.name"
   );
   await typeWithDelay(page, 'input[id="password"]', "tryme");
   await page.click(`button[id="form-submit"]`, {
@@ -100,11 +53,13 @@ test("IC-2 Send Connection Request", async ({ page }) => {
   await typeWithDelay(
     page,
     'input[id="email-address"]',
-    "sandrineryan@hamill.biz"
+    "carissakunze@lindgren.info"
   );
 
   await page.click(`.text-right button[id="form-submit"]`, {
     delay: getRandomInt(1000, 3000),
   });
-  await page.waitForTimeout(5000);
+  if (WALKTHROUGH_MODE == "on") {
+    await page.waitForTimeout(5000);
+  }
 });
