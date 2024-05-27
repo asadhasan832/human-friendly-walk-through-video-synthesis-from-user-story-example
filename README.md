@@ -8,10 +8,10 @@ rapid testing and a more human friendly walkthrough video synthesis.
 ```bash
 # Install dependencies
 npm i
-# Execute with walkthrough mode capability flag on
-CAPABILITY_WALKTHROUGH_MODE=on npx playwright test
 # Execute with walkthrough mode capability flag off
 CAPABILITY_WALKTHROUGH_MODE=off npx playwright test
+# Execute with walkthrough mode capability flag on
+CAPABILITY_WALKTHROUGH_MODE=on npx playwright test
 # Find video output
 ls test-results/idempotence_ca-IC-2-Send-Connection-Request-chromium/video.webm
 ```
